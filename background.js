@@ -389,3 +389,23 @@ chrome.runtime.onMessage.addListener(
     // }
   });
 
+chrome.commands.onCommand.addListener(function(cmd) {
+    switch (cmd) {
+        case "previous_video":
+            playPreviousVideo();
+        break;
+        case "pp":
+            chrome.tabs.executeScript(tabId, {
+                code: 'document.querySelector(".ytp-play-button").click()'
+            }, function () {});
+            break;
+        case "next_video":
+            chrome.storage.sync.get("youtube_queue_extension_toggle", function (data) {
+                console.log(data, next_video);
+                if (data["youtube_queue_extension_toggle"] == "loop" || next_video !== 0) {
+                    playNextVideo();
+                }
+            });
+            break;
+    }
+});
